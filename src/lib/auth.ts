@@ -38,8 +38,19 @@ export async function getSession(): Promise<JWTPayload | null> {
 
 export function getDiscordAvatarUrl(userId: string, avatar: string | null): string {
   if (!avatar) {
-    const defaultIndex = Number(BigInt(userId) >> BigInt(22)) % 6;
-    return `https://cdn.discordapp.com/embed/avatars/${defaultIndex}.png`;
+    try {
+      if (/^\d+$/.test(userId)) {
+        const defaultIndex = Number(BigInt(userId) >> BigInt(22)) % 6;
+        return `https://cdn.discordapp.com/embed/avatars/${defaultIndex}.png`;
+      }
+    } catch {
+      // Fallback below
+    }
+    return `https://cdn.discordapp.com/embed/avatars/0.png`;
+  }
+  // If avatar is a URL (e.g. from Google login), just return it directly
+  if (avatar.startsWith("http")) {
+    return avatar;
   }
   return `https://cdn.discordapp.com/avatars/${userId}/${avatar}.png`;
 }
