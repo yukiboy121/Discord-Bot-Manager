@@ -1,7 +1,7 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function POST() {
-  const baseUrl = process.env.WEB_APP_URL || "http://localhost:3000";
+export async function POST(request: NextRequest) {
+  const baseUrl = process.env.WEB_APP_URL || request.nextUrl.origin;
   const response = NextResponse.redirect(`${baseUrl}/`);
   response.cookies.set("sentinel_token", "", {
     httpOnly: true,
@@ -13,8 +13,8 @@ export async function POST() {
   return response;
 }
 
-export async function GET() {
-  const baseUrl = process.env.WEB_APP_URL || "http://localhost:3000";
+export async function GET(request: NextRequest) {
+  const baseUrl = process.env.WEB_APP_URL || request.nextUrl.origin;
   const response = NextResponse.redirect(`${baseUrl}/`);
   response.cookies.set("sentinel_token", "", {
     httpOnly: true,

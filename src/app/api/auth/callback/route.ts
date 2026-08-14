@@ -6,7 +6,7 @@ import { eq } from "drizzle-orm";
 
 export async function GET(request: NextRequest) {
   const code = request.nextUrl.searchParams.get("code");
-  const baseUrl = process.env.WEB_APP_URL || "http://localhost:3000";
+  const baseUrl = process.env.WEB_APP_URL || request.nextUrl.origin;
 
   if (!code) {
     return NextResponse.redirect(`${baseUrl}/?error=no_code`);

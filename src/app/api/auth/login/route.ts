@@ -1,12 +1,13 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 
-export async function GET() {
+export async function GET(request: NextRequest) {
   const clientId = process.env.DISCORD_CLIENT_ID;
-  const redirectUri = `${process.env.WEB_APP_URL || "http://localhost:3000"}/api/auth/callback`;
+  const baseUrl = process.env.WEB_APP_URL || request.nextUrl.origin;
+  const redirectUri = `${baseUrl}/api/auth/callback`;
   
   if (!clientId) {
     // Demo mode: redirect to demo login
-    return NextResponse.redirect(new URL("/api/auth/demo", process.env.WEB_APP_URL || "http://localhost:3000"));
+    return NextResponse.redirect(new URL("/api/auth/demo", baseUrl));
   }
 
   const params = new URLSearchParams({

@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { createToken } from "@/lib/auth";
 import { db } from "@/db";
 import { dashboardUsers } from "@/db/schema";
 import { eq } from "drizzle-orm";
 
-export async function GET() {
-  const baseUrl = process.env.WEB_APP_URL || "http://localhost:3000";
+export async function GET(request: NextRequest) {
+  const baseUrl = process.env.WEB_APP_URL || request.nextUrl.origin;
 
   // Demo user for when Discord OAuth is not configured
   const demoUser = {
