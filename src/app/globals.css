@@ -1,0 +1,52 @@
+@import "tailwindcss";
+
+@theme {
+  --color-discord-blurple: #5865F2;
+  --color-discord-green: #57F287;
+  --color-discord-yellow: #FEE75C;
+  --color-discord-fuchsia: #EB459E;
+  --color-discord-red: #ED4245;
+  --color-discord-dark: #2C2F33;
+  --color-discord-darker: #23272A;
+  --color-discord-darkest: #1a1d21;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 20px rgba(88, 101, 242, 0.3); }
+  50% { box-shadow: 0 0 40px rgba(88, 101, 242, 0.6); }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-10px); }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
