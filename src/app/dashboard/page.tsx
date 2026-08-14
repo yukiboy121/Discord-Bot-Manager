@@ -3,11 +3,41 @@ import { useEffect, useState } from "react";
 import { StatCard } from "@/components/dashboard/stat-card";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import type { DashboardStats } from "@/types";
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [loading, setLoading] = useState(true);
+
+  const [showAddBotModal, setShowAddBotModal] = useState(false);
+  const [botToken, setBotToken] = useState("");
+  const [addingBot, setAddingBot] = useState(false);
+  const [botError, setBotError] = useState("");
+
+  const handleAddBot = async () => {
+    setBotError("");
+    setAddingBot(true);
+    try {
+      const res = await fetch("/api/bot/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ botToken }),
+      });
+      const data = await res.json();
+      if (res.ok) {
+        alert("Bot added successfully!");
+        setShowAddBotModal(false);
+        setBotToken("");
+      } else {
+        setBotError(data.error || "Failed to add bot.");
+      }
+    } catch (e) {
+      setBotError("An error occurred while adding the bot.");
+    } finally {
+      setAddingBot(false);
+    }
+  };
 
   useEffect(() => {
     fetch("/api/bot/stats")
@@ -48,10 +78,15 @@ export default function DashboardPage() {
           <h1 className="text-3xl font-bold text-white">Dashboard</h1>
           <p className="text-gray-400 mt-1">Welcome back! Here&apos;s your bot overview.</p>
         </div>
-        <Badge variant={stats?.isOnline ? "success" : "destructive"} className="text-sm px-4 py-1.5">
-          <span className={`w-2 h-2 rounded-full mr-2 inline-block ${stats?.isOnline ? "bg-green-400 animate-pulse" : "bg-red-400"}`} />
-          {stats?.isOnline ? "Online" : "Offline"}
-        </Badge>
+        <div className="flex items-center gap-4">
+          <Button onClick={() => setShowAddBotModal(true)} className="bg-indigo-600 hover:bg-indigo-700 text-white">
+            <span className="mr-2 text-lg leading-none">+</span> Add Bot
+          </Button>
+          <Badge variant={stats?.isOnline ? "success" : "destructive"} className="text-sm px-4 py-1.5">
+            <span className={`w-2 h-2 rounded-full mr-2 inline-block ${stats?.isOnline ? "bg-green-400 animate-pulse" : "bg-red-400"}`} />
+            {stats?.isOnline ? "Online" : "Offline"}
+          </Badge>
+        </div>
       </div>
 
       {/* Stats Grid */}
@@ -165,6 +200,39 @@ export default function DashboardPage() {
           </CardContent>
         </Card>
       </div>
+
+      {/* Add Bot Modal */}
+      {showAddBotModal && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 backdrop-blur-sm p-4">
+          <Card className="w-full max-w-md bg-gray-900 border-gray-800 shadow-2xl">
+            <CardHeader>
+              <CardTitle className="text-white">Add New Bot</CardTitle>
+            </CardHeader>
+            <CardContent>
+              {botError && <div className="mb-4 text-sm text-red-400 bg-red-400/10 p-3 rounded border border-red-500/20">{botError}</div>}
+              <div className="space-y-4">
+                <div className="space-y-2">
+                  <label className="text-sm font-medium text-gray-200">Bot Token</label>
+                  <input 
+                    type="password" 
+                    className="w-full bg-gray-950 border border-gray-700 rounded-md p-2 text-white focus:outline-none focus:ring-2 focus:ring-indigo-500" 
+                    placeholder="Enter your Discord Bot Token..."
+                    value={botToken}
+                    onChange={e => setBotToken(e.target.value)}
+                  />
+                  <p className="text-xs text-gray-400">You can get this from the Discord Developer Portal.</p>
+                </div>
+                <div className="flex justify-end gap-3 mt-6">
+                  <Button variant="ghost" onClick={() => setShowAddBotModal(false)} className="text-gray-300 hover:text-white">Cancel</Button>
+                  <Button onClick={handleAddBot} disabled={addingBot || !botToken} className="bg-indigo-600 hover:bg-indigo-700 text-white">
+                    {addingBot ? "Adding..." : "Add Bot"}
+                  </Button>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      )}
     </div>
   );
 }

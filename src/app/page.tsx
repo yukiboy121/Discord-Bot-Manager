@@ -55,10 +55,10 @@ export default function LandingPage() {
               <a href="#faq" className="text-gray-400 hover:text-white transition-colors text-sm">FAQ</a>
             </div>
             <div className="flex items-center gap-3">
-              <Link href="/api/auth/login">
+              <Link href="/login">
                 <Button variant="ghost" size="sm">Login</Button>
               </Link>
-              <Link href="/api/auth/login">
+              <Link href="/login">
                 <Button size="sm" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700">
                   Add to Discord
                 </Button>
@@ -94,7 +94,7 @@ export default function LandingPage() {
               smart moderation, and a professional web dashboard — all in one bot.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/api/auth/login">
+              <Link href="/login">
                 <Button size="lg" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 px-8 text-base shadow-xl shadow-indigo-500/25">
                   🚀 Open Dashboard
                 </Button>
@@ -301,12 +301,12 @@ export default function LandingPage() {
               Join thousands of server owners who trust Sentinel to keep their communities safe.
             </p>
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Link href="/api/auth/login">
+              <Link href="/login">
                 <Button size="lg" className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 px-10 text-base">
                   🛡️ Get Started Free
                 </Button>
               </Link>
-              <Link href="/api/auth/login">
+              <Link href="/login">
                 <Button variant="outline" size="lg" className="px-10 text-base">
                   Open Dashboard
                 </Button>
@@ -339,7 +339,7 @@ export default function LandingPage() {
               <h4 className="text-white font-semibold mb-3 text-sm">Resources</h4>
               <ul className="space-y-2 text-sm text-gray-500">
                 <li><a href="#faq" className="hover:text-white transition-colors">FAQ</a></li>
-                <li><Link href="/api/auth/login" className="hover:text-white transition-colors">Dashboard</Link></li>
+                <li><Link href="/login" className="hover:text-white transition-colors">Dashboard</Link></li>
               </ul>
             </div>
             <div>

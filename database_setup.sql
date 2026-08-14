@@ -177,6 +177,7 @@ CREATE TABLE IF NOT EXISTS "dashboard_users" (
 	"display_name" text,
 	"avatar" text,
 	"email" text,
+	"password_hash" text,
 	"access_token" text,
 	"refresh_token" text,
 	"token_expiry" timestamp,
@@ -190,6 +191,16 @@ CREATE TABLE IF NOT EXISTS "dashboard_permissions" (
 	"guild_id" varchar(32) NOT NULL,
 	"user_id" varchar(32) NOT NULL,
 	"role" varchar(20) DEFAULT 'viewer' NOT NULL,
+	"created_at" timestamp DEFAULT now()
+);
+
+CREATE TABLE IF NOT EXISTS "bot_configs" (
+	"id" serial PRIMARY KEY NOT NULL,
+	"user_id" varchar(32) NOT NULL,
+	"bot_token" text NOT NULL,
+	"bot_id" varchar(32) NOT NULL,
+	"name" text NOT NULL,
+	"avatar" text,
 	"created_at" timestamp DEFAULT now()
 );
 
@@ -308,6 +319,7 @@ CREATE INDEX IF NOT EXISTS "mod_cases_guild_idx" ON "moderation_cases" ("guild_i
 CREATE INDEX IF NOT EXISTS "mod_cases_target_idx" ON "moderation_cases" ("target_id");
 CREATE INDEX IF NOT EXISTS "whitelists_guild_idx" ON "whitelists" ("guild_id");
 CREATE INDEX IF NOT EXISTS "dash_perms_guild_idx" ON "dashboard_permissions" ("guild_id");
+CREATE INDEX IF NOT EXISTS "bot_configs_user_idx" ON "bot_configs" ("user_id");
 CREATE INDEX IF NOT EXISTS "webhook_configs_guild_idx" ON "webhook_configs" ("guild_id");
 CREATE INDEX IF NOT EXISTS "dm_campaigns_guild_idx" ON "dm_campaigns" ("guild_id");
 CREATE INDEX IF NOT EXISTS "audit_logs_guild_idx" ON "audit_logs" ("guild_id");

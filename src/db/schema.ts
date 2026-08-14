@@ -212,6 +212,7 @@ export const dashboardUsers = pgTable("dashboard_users", {
   displayName: text("display_name"),
   avatar: text("avatar"),
   email: text("email"),
+  passwordHash: text("password_hash"),
   accessToken: text("access_token"),
   refreshToken: text("refresh_token"),
   tokenExpiry: timestamp("token_expiry"),
@@ -228,6 +229,19 @@ export const dashboardPermissions = pgTable("dashboard_permissions", {
   createdAt: timestamp("created_at").defaultNow(),
 }, (table) => [
   index("dash_perms_guild_idx").on(table.guildId),
+]);
+
+// ─── Bot Configurations ───
+export const botConfigs = pgTable("bot_configs", {
+  id: serial("id").primaryKey(),
+  userId: varchar("user_id", { length: 32 }).notNull(),
+  botToken: text("bot_token").notNull(),
+  botId: varchar("bot_id", { length: 32 }).notNull(),
+  name: text("name").notNull(),
+  avatar: text("avatar"),
+  createdAt: timestamp("created_at").defaultNow(),
+}, (table) => [
+  index("bot_configs_user_idx").on(table.userId),
 ]);
 
 // ─── Bot Status Rotation ───
