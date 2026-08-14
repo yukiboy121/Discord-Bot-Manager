@@ -2,12 +2,15 @@ import { NextRequest, NextResponse } from "next/server";
 import { db } from "@/db";
 import { botConfigs } from "@/db/schema";
 import { getSession } from "@/lib/auth";
+import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
   try {
     const session = await getSession();
     if (!session) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+      const cookieStore = await cookies();
+      const token = cookieStore.get("sentinel_token")?.value;
+      return NextResponse.json({ error: `Unauthorized. Token exists: ${!!token}` }, { status: 401 });
     }
 
     const { botToken } = await request.json();
