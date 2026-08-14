@@ -29,6 +29,7 @@ export default function LandingPage() {
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMounted(true);
     // Auto-seed on first load
     fetch("/api/seed", { method: "POST" }).catch(() => {});

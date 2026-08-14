@@ -4,13 +4,12 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useRouter } from "next/navigation";
 import { Mail, Lock, User } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();
+  const [activeTab, setActiveTab] = useState<"login" | "register">("login");
   const [error, setError] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -97,103 +96,112 @@ export default function LoginPage() {
         </div>
 
         <Card className="bg-gray-900/60 border-gray-800 backdrop-blur-xl shadow-2xl">
-          <Tabs defaultValue="login" className="w-full">
-            <CardHeader className="pb-4">
-              <TabsList className="grid w-full grid-cols-2 bg-gray-800/50">
-                <TabsTrigger value="login">Login</TabsTrigger>
-                <TabsTrigger value="register">Sign Up</TabsTrigger>
-              </TabsList>
-            </CardHeader>
-            <CardContent className="pb-8 px-8">
-              {error && (
-                <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-md text-red-200 text-sm text-center">
-                  {error}
+          <CardHeader className="pb-4">
+            <div className="grid w-full grid-cols-2 bg-gray-800/50 rounded-md p-1">
+              <button 
+                className={`py-1.5 px-3 rounded-sm text-sm font-medium transition-all ${activeTab === 'login' ? 'bg-gray-700 text-white shadow' : 'text-gray-400 hover:text-gray-200'}`}
+                onClick={() => setActiveTab("login")}
+              >
+                Login
+              </button>
+              <button 
+                className={`py-1.5 px-3 rounded-sm text-sm font-medium transition-all ${activeTab === 'register' ? 'bg-gray-700 text-white shadow' : 'text-gray-400 hover:text-gray-200'}`}
+                onClick={() => setActiveTab("register")}
+              >
+                Sign Up
+              </button>
+            </div>
+          </CardHeader>
+          <CardContent className="pb-8 px-8">
+            {error && (
+              <div className="mb-4 p-3 bg-red-500/20 border border-red-500/50 rounded-md text-red-200 text-sm text-center">
+                {error}
+              </div>
+            )}
+
+            {activeTab === "login" && (
+              <form onSubmit={handleCredentialsLogin} className="space-y-4">
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-medium text-gray-200">Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      placeholder="admin@sentinel.bot"
+                      className="pl-10 bg-gray-950/50 border-gray-700 text-white"
+                      required
+                    />
+                  </div>
                 </div>
-              )}
+                <div className="space-y-2">
+                  <label htmlFor="password" className="text-sm font-medium text-gray-200">Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+                    <Input
+                      id="password"
+                      name="password"
+                      type="password"
+                      className="pl-10 bg-gray-950/50 border-gray-700 text-white"
+                      required
+                    />
+                  </div>
+                </div>
+                <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" disabled={loading}>
+                  {loading ? "Signing in..." : "Sign In"}
+                </Button>
+              </form>
+            )}
 
-              <TabsContent value="login" className="mt-0">
-                <form onSubmit={handleCredentialsLogin} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-                      <Input
-                        id="email"
-                        name="email"
-                        type="email"
-                        placeholder="admin@sentinel.bot"
-                        className="pl-10 bg-gray-950/50 border-gray-700 text-white"
-                        required
-                      />
-                    </div>
+            {activeTab === "register" && (
+              <form onSubmit={handleRegister} className="space-y-4">
+                <div className="space-y-2">
+                  <label htmlFor="username" className="text-sm font-medium text-gray-200">Username</label>
+                  <div className="relative">
+                    <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+                    <Input
+                      id="username"
+                      name="username"
+                      type="text"
+                      placeholder="SentinelAdmin"
+                      className="pl-10 bg-gray-950/50 border-gray-700 text-white"
+                      required
+                    />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-                      <Input
-                        id="password"
-                        name="password"
-                        type="password"
-                        className="pl-10 bg-gray-950/50 border-gray-700 text-white"
-                        required
-                      />
-                    </div>
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="reg-email" className="text-sm font-medium text-gray-200">Email</label>
+                  <div className="relative">
+                    <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+                    <Input
+                      id="reg-email"
+                      name="email"
+                      type="email"
+                      placeholder="admin@sentinel.bot"
+                      className="pl-10 bg-gray-950/50 border-gray-700 text-white"
+                      required
+                    />
                   </div>
-                  <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" disabled={loading}>
-                    {loading ? "Signing in..." : "Sign In"}
-                  </Button>
-                </form>
-              </TabsContent>
-
-              <TabsContent value="register" className="mt-0">
-                <form onSubmit={handleRegister} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="username">Username</Label>
-                    <div className="relative">
-                      <User className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-                      <Input
-                        id="username"
-                        name="username"
-                        type="text"
-                        placeholder="SentinelAdmin"
-                        className="pl-10 bg-gray-950/50 border-gray-700 text-white"
-                        required
-                      />
-                    </div>
+                </div>
+                <div className="space-y-2">
+                  <label htmlFor="reg-password" className="text-sm font-medium text-gray-200">Password</label>
+                  <div className="relative">
+                    <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
+                    <Input
+                      id="reg-password"
+                      name="password"
+                      type="password"
+                      className="pl-10 bg-gray-950/50 border-gray-700 text-white"
+                      required
+                    />
                   </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="reg-email">Email</Label>
-                    <div className="relative">
-                      <Mail className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-                      <Input
-                        id="reg-email"
-                        name="email"
-                        type="email"
-                        placeholder="admin@sentinel.bot"
-                        className="pl-10 bg-gray-950/50 border-gray-700 text-white"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="reg-password">Password</Label>
-                    <div className="relative">
-                      <Lock className="absolute left-3 top-2.5 h-5 w-5 text-gray-500" />
-                      <Input
-                        id="reg-password"
-                        name="password"
-                        type="password"
-                        className="pl-10 bg-gray-950/50 border-gray-700 text-white"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" disabled={loading}>
-                    {loading ? "Creating account..." : "Create Account"}
-                  </Button>
-                </form>
-              </TabsContent>
+                </div>
+                <Button type="submit" className="w-full bg-indigo-600 hover:bg-indigo-700 text-white" disabled={loading}>
+                  {loading ? "Creating account..." : "Create Account"}
+                </Button>
+              </form>
+            )}
 
               <div className="mt-6 flex items-center justify-center">
                 <span className="h-px w-full bg-gray-800"></span>
@@ -228,8 +236,7 @@ export default function LoginPage() {
                   Google
                 </Button>
               </div>
-            </CardContent>
-          </Tabs>
+          </CardContent>
         </Card>
       </div>
     </div>

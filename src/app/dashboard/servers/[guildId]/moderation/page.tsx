@@ -39,6 +39,7 @@ export default function ModerationPage() {
   };
 
   useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     fetchCases();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [guildId]);
