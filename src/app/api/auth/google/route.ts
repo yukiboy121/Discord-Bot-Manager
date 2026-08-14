@@ -6,7 +6,7 @@ export async function GET(request: NextRequest) {
   const redirectUri = `${baseUrl}/api/auth/google/callback`;
   
   if (!clientId) {
-    return NextResponse.redirect(new URL("/api/auth/demo", baseUrl));
+    return NextResponse.json({ error: "GOOGLE_CLIENT_ID is missing in Vercel Environment Variables. Please add it to use Google Login." }, { status: 500 });
   }
 
   const params = new URLSearchParams({
