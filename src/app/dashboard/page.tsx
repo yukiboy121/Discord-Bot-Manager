@@ -181,12 +181,12 @@ export default function DashboardPage() {
           <CardContent>
             <div className="space-y-3">
               {[
-                { label: "Discord Gateway", status: "Operational", color: "bg-green-400" },
+                { label: "Discord Gateway", status: stats?.isOnline ? "Operational" : "Offline", color: stats?.isOnline ? "bg-green-400" : "bg-red-400" },
                 { label: "Database", status: "Operational", color: "bg-green-400" },
-                { label: "API Server", status: "Operational", color: "bg-green-400" },
-                { label: "Anti-Spam Engine", status: "Active", color: "bg-green-400" },
-                { label: "Anti-Raid Monitor", status: "Active", color: "bg-green-400" },
-                { label: "Anti-Nuke Shield", status: "Active", color: "bg-green-400" },
+                { label: "API Server", status: stats?.isOnline ? "Operational" : "Offline", color: stats?.isOnline ? "bg-green-400" : "bg-red-400" },
+                { label: "Anti-Spam Engine", status: stats?.isOnline ? "Active" : "Inactive", color: stats?.isOnline ? "bg-green-400" : "bg-gray-500" },
+                { label: "Anti-Raid Monitor", status: stats?.isOnline ? "Active" : "Inactive", color: stats?.isOnline ? "bg-green-400" : "bg-gray-500" },
+                { label: "Anti-Nuke Shield", status: stats?.isOnline ? "Active" : "Inactive", color: stats?.isOnline ? "bg-green-400" : "bg-gray-500" },
               ].map((service) => (
                 <div key={service.label} className="flex items-center justify-between py-2 border-b border-gray-700/50 last:border-0">
                   <span className="text-sm text-gray-300">{service.label}</span>

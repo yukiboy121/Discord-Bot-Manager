@@ -5,8 +5,14 @@ import { botGlobalStats, guilds, securityEvents, moderationCases } from "@/db/sc
 import { sql } from "drizzle-orm";
 
 export async function GET() {
-  const session = await getSession();
-  if (!session) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  let session = await getSession();
+  if (!session) {
+    if (process.env.NODE_ENV === "development") {
+      session = { sub: "local_dev_user", username: "Local Dev", avatar: null };
+    } else {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+  }
 
   // Get or create global stats
   const stats = await db.select().from(botGlobalStats).limit(1);
@@ -25,12 +31,12 @@ export async function GET() {
       totalGuilds,
       securityIncidents,
       moderationActions,
-      isOnline: true,
-      totalUsers: totalGuilds * 150,
+      isOnline: false,
+      totalUsers: 0,
       messagesProcessed: 0,
       commandsExecuted: 0,
-      botLatency: 42,
-      apiLatency: 38,
+      botLatency: 0,
+      apiLatency: 0,
     }).returning();
     return NextResponse.json(newStats[0]);
   }
