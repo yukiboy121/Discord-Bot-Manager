@@ -6,14 +6,13 @@ import { cookies } from "next/headers";
 
 export async function POST(request: NextRequest) {
   try {
-    let session = await getSession();
+    let session = await getSession(request);
     if (!session) {
       if (process.env.NODE_ENV === "development") {
         // Bypass auth for local development
         session = { sub: "local_dev_user", username: "Local Dev", avatar: null };
       } else {
-        const cookieStore = await cookies();
-        const token = cookieStore.get("sentinel_token")?.value;
+        const token = request.cookies.get("sentinel_token")?.value;
         return NextResponse.json({ error: `Unauthorized. Token exists: ${!!token}` }, { status: 401 });
       }
     }

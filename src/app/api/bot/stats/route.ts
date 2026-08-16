@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
+import { NextRequest, NextResponse } from "next/server";
 import { getSession } from "@/lib/auth";
 import { db } from "@/db";
 import { botGlobalStats, guilds, securityEvents, moderationCases } from "@/db/schema";
 import { sql } from "drizzle-orm";
 
-export async function GET() {
-  let session = await getSession();
+export async function GET(request: NextRequest) {
+  let session = await getSession(request);
   if (!session) {
     if (process.env.NODE_ENV === "development") {
       session = { sub: "local_dev_user", username: "Local Dev", avatar: null };

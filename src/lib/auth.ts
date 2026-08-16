@@ -29,9 +29,16 @@ export async function verifyToken(token: string): Promise<JWTPayload | null> {
   }
 }
 
-export async function getSession(): Promise<JWTPayload | null> {
-  const cookieStore = await cookies();
-  const token = cookieStore.get("sentinel_token")?.value;
+import type { NextRequest } from "next/server";
+
+export async function getSession(request?: NextRequest): Promise<JWTPayload | null> {
+  let token: string | undefined;
+  if (request) {
+    token = request.cookies.get("sentinel_token")?.value;
+  } else {
+    const cookieStore = await cookies();
+    token = cookieStore.get("sentinel_token")?.value;
+  }
   if (!token) return null;
   return verifyToken(token);
 }
