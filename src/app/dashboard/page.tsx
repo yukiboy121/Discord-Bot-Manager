@@ -22,6 +22,7 @@ export default function DashboardPage() {
       const res = await fetch("/api/bot/add", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
+        credentials: "include",
         body: JSON.stringify({ botToken }),
       });
       const data = await res.json();
@@ -40,7 +41,7 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-    fetch("/api/bot/stats")
+    fetch("/api/bot/stats", { credentials: "include" })
       .then((r) => r.json())
       .then((data) => {
         setStats({

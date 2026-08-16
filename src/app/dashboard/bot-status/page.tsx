@@ -22,7 +22,7 @@ export default function BotStatusPage() {
   const [newStatus, setNewStatus] = useState({ type: "watching", text: "", interval: 10 });
 
   useEffect(() => {
-    fetch("/api/bot/statuses")
+    fetch("/api/bot/statuses", { credentials: "include" })
       .then((r) => r.json())
       .then(setStatuses)
       .catch(console.error)
@@ -182,3 +182,4 @@ export default function BotStatusPage() {
     </div>
   );
 }
+

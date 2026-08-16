@@ -20,7 +20,7 @@ export default function ServersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/guilds")
+    fetch("/api/guilds", { credentials: "include" })
       .then((r) => r.json())
       .then(setGuilds)
       .catch(console.error)
@@ -88,3 +88,4 @@ export default function ServersPage() {
     </div>
   );
 }
+
