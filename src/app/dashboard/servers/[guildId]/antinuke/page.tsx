@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { ConfigSection } from "@/components/dashboard/config-section";
@@ -10,7 +11,7 @@ export default function AntiNukePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/guilds/${guildId}/antinuke`)
+    apiFetch(`/api/guilds/${guildId}/antinuke`)
       .then((r) => r.json())
       .then(setConfig)
       .catch(console.error)
@@ -61,7 +62,7 @@ export default function AntiNukePage() {
         ]}
         values={config}
         onSave={async (values) => {
-          const res = await fetch(`/api/guilds/${guildId}/antinuke`, {
+          const res = await apiFetch(`/api/guilds/${guildId}/antinuke`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(values),

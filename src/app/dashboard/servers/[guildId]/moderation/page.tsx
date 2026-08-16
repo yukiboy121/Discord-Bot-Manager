@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -26,7 +27,7 @@ export default function ModerationPage() {
     if (search) params.set("search", search);
     if (filter) params.set("action", filter);
     
-    fetch(`/api/guilds/${guildId}/moderation?${params}`)
+    apiFetch(`/api/guilds/${guildId}/moderation?${params}`)
       .then((r) => r.json())
       .then((data) => {
         setCases(data.cases || []);

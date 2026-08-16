@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -30,7 +31,7 @@ export default function AutoModPage() {
   const [newRule, setNewRule] = useState({ name: "", type: "badword", action: "delete" });
 
   useEffect(() => {
-    fetch(`/api/guilds/${guildId}/automod`)
+    apiFetch(`/api/guilds/${guildId}/automod`)
       .then((r) => r.json())
       .then(setRules)
       .catch(console.error)
@@ -38,7 +39,7 @@ export default function AutoModPage() {
   }, [guildId]);
 
   const createRule = async () => {
-    const res = await fetch(`/api/guilds/${guildId}/automod`, {
+    const res = await apiFetch(`/api/guilds/${guildId}/automod`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newRule),
@@ -50,7 +51,7 @@ export default function AutoModPage() {
   };
 
   const toggleRule = async (rule: AutoModRule) => {
-    const res = await fetch(`/api/guilds/${guildId}/automod`, {
+    const res = await apiFetch(`/api/guilds/${guildId}/automod`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: rule.id, enabled: !rule.enabled }),
@@ -60,7 +61,7 @@ export default function AutoModPage() {
   };
 
   const deleteRule = async (id: number) => {
-    await fetch(`/api/guilds/${guildId}/automod`, {
+    await apiFetch(`/api/guilds/${guildId}/automod`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),

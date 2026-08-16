@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import type { DashboardStats } from "@/types";
+import { getClientToken } from "@/app/actions";
+import { apiFetch } from "@/lib/api";
 
 export default function DashboardPage() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
@@ -19,9 +21,13 @@ export default function DashboardPage() {
     setBotError("");
     setAddingBot(true);
     try {
-      const res = await fetch("/api/bot/add", {
+      const token = await getClientToken();
+      const res = await apiFetch("/api/bot/add", {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { 
+          "Content-Type": "application/json",
+          "Authorization": `Bearer ${token}` 
+        },
         credentials: "include",
         body: JSON.stringify({ botToken }),
       });
@@ -41,8 +47,12 @@ export default function DashboardPage() {
   };
 
   useEffect(() => {
-    fetch("/api/bot/stats", { credentials: "include" })
-      .then((r) => r.json())
+    getClientToken().then(token => {
+      apiFetch("/api/bot/stats", { 
+        credentials: "include",
+        headers: { "Authorization": `Bearer ${token}` }
+      })
+        .then((r) => r.json())
       .then((data) => {
         setStats({
           totalGuilds: data.totalGuilds ?? 0,
@@ -58,6 +68,7 @@ export default function DashboardPage() {
       })
       .catch(console.error)
       .finally(() => setLoading(false));
+    });
   }, []);
 
   if (loading) {

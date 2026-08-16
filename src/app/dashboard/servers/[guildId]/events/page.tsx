@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Card, CardContent } from "@/components/ui/card";
@@ -17,7 +18,7 @@ export default function EventsPage() {
 
   const fetchEvents = (p: number = 1) => {
     setLoading(true);
-    fetch(`/api/guilds/${guildId}/events?page=${p}&limit=20`)
+    apiFetch(`/api/guilds/${guildId}/events?page=${p}&limit=20`)
       .then((r) => r.json())
       .then((data) => {
         setEvents(data.events || []);

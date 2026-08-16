@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { StatCard } from "@/components/dashboard/stat-card";
@@ -21,7 +22,7 @@ export default function GuildOverviewPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/guilds/${guildId}`)
+    apiFetch(`/api/guilds/${guildId}`)
       .then((r) => r.json())
       .then(setData)
       .catch(console.error)

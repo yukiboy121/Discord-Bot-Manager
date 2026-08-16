@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { ConfigSection } from "@/components/dashboard/config-section";
@@ -21,7 +22,7 @@ export default function AntiSpamPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/guilds/${guildId}/antispam`)
+    apiFetch(`/api/guilds/${guildId}/antispam`)
       .then((r) => r.json())
       .then((data) => {
         setConfig(data);
@@ -50,7 +51,7 @@ export default function AntiSpamPage() {
   }
 
   const saveEscalation = async () => {
-    await fetch(`/api/guilds/${guildId}/antispam`, {
+    await apiFetch(`/api/guilds/${guildId}/antispam`, {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ escalationLevels: escalation }),
@@ -83,7 +84,7 @@ export default function AntiSpamPage() {
         ]}
         values={config}
         onSave={async (values) => {
-          const res = await fetch(`/api/guilds/${guildId}/antispam`, {
+          const res = await apiFetch(`/api/guilds/${guildId}/antispam`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(values),

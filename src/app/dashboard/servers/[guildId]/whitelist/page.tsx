@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -18,7 +19,7 @@ export default function WhitelistPage() {
   const [newEntry, setNewEntry] = useState({ type: "user", targetId: "", targetName: "" });
 
   useEffect(() => {
-    fetch(`/api/guilds/${guildId}/whitelist`)
+    apiFetch(`/api/guilds/${guildId}/whitelist`)
       .then((r) => r.json())
       .then(setEntries)
       .catch(console.error)
@@ -26,7 +27,7 @@ export default function WhitelistPage() {
   }, [guildId]);
 
   const addEntry = async () => {
-    const res = await fetch(`/api/guilds/${guildId}/whitelist`, {
+    const res = await apiFetch(`/api/guilds/${guildId}/whitelist`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newEntry),
@@ -38,7 +39,7 @@ export default function WhitelistPage() {
   };
 
   const removeEntry = async (id: number) => {
-    await fetch(`/api/guilds/${guildId}/whitelist`, {
+    await apiFetch(`/api/guilds/${guildId}/whitelist`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),

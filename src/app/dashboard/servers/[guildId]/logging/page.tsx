@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { ConfigSection } from "@/components/dashboard/config-section";
@@ -10,7 +11,7 @@ export default function LoggingPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/guilds/${guildId}/logging`)
+    apiFetch(`/api/guilds/${guildId}/logging`)
       .then((r) => r.json())
       .then(setConfig)
       .catch(console.error)
@@ -45,7 +46,7 @@ export default function LoggingPage() {
         ]}
         values={config}
         onSave={async (values) => {
-          const res = await fetch(`/api/guilds/${guildId}/logging`, {
+          const res = await apiFetch(`/api/guilds/${guildId}/logging`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(values),
@@ -74,7 +75,7 @@ export default function LoggingPage() {
         ]}
         values={config}
         onSave={async (values) => {
-          const res = await fetch(`/api/guilds/${guildId}/logging`, {
+          const res = await apiFetch(`/api/guilds/${guildId}/logging`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(values),

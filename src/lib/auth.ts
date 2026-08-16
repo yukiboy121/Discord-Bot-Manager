@@ -34,7 +34,18 @@ import type { NextRequest } from "next/server";
 export async function getSession(request?: NextRequest): Promise<JWTPayload | null> {
   let token: string | undefined;
   if (request) {
-    token = request.cookies.get("sentinel_token")?.value;
+    // 1. Try Authorization header
+    const authHeader = request.headers.get("authorization");
+    if (authHeader?.startsWith("Bearer ")) {
+      token = authHeader.split(" ")[1];
+    }
+    
+    // 2. Try request.cookies
+    if (!token) {
+      token = request.cookies.get("sentinel_token")?.value;
+    }
+    
+    // 3. Fallback to raw cookie header
     if (!token) {
       const cookieHeader = request.headers.get("cookie");
       if (cookieHeader) {

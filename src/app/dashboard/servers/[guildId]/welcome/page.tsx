@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { ConfigSection } from "@/components/dashboard/config-section";
@@ -11,7 +12,7 @@ export default function WelcomePage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch(`/api/guilds/${guildId}/welcome`)
+    apiFetch(`/api/guilds/${guildId}/welcome`)
       .then((r) => r.json())
       .then(setConfig)
       .catch(console.error)
@@ -57,7 +58,7 @@ export default function WelcomePage() {
         ]}
         values={config}
         onSave={async (values) => {
-          const res = await fetch(`/api/guilds/${guildId}/welcome`, {
+          const res = await apiFetch(`/api/guilds/${guildId}/welcome`, {
             method: "PUT",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(values),

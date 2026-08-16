@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
@@ -20,7 +21,7 @@ export default function ServersPage() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetch("/api/guilds", { credentials: "include" })
+    apiFetch("/api/guilds", { credentials: "include" })
       .then((r) => r.json())
       .then(setGuilds)
       .catch(console.error)
@@ -50,7 +51,7 @@ export default function ServersPage() {
           <div className="text-5xl mb-4">🏠</div>
           <h2 className="text-xl font-semibold text-white mb-2">No servers found</h2>
           <p className="text-gray-400 mb-6">The bot hasn&apos;t been added to any servers yet, or demo data hasn&apos;t been seeded.</p>
-          <Button onClick={() => fetch("/api/seed", { method: "POST" }).then(() => window.location.reload())}>
+          <Button onClick={() => apiFetch("/api/seed", { method: "POST" }).then(() => window.location.reload())}>
             Load Demo Data
           </Button>
         </Card>

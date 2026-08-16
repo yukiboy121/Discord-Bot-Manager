@@ -1,4 +1,5 @@
 "use client";
+import { apiFetch } from "@/lib/api";
 import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -22,7 +23,7 @@ export default function BotStatusPage() {
   const [newStatus, setNewStatus] = useState({ type: "watching", text: "", interval: 10 });
 
   useEffect(() => {
-    fetch("/api/bot/statuses", { credentials: "include" })
+    apiFetch("/api/bot/statuses", { credentials: "include" })
       .then((r) => r.json())
       .then(setStatuses)
       .catch(console.error)
@@ -30,7 +31,7 @@ export default function BotStatusPage() {
   }, []);
 
   const addStatus = async () => {
-    const res = await fetch("/api/bot/statuses", {
+    const res = await apiFetch("/api/bot/statuses", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(newStatus),
@@ -42,7 +43,7 @@ export default function BotStatusPage() {
   };
 
   const toggleStatus = async (status: BotStatus) => {
-    const res = await fetch("/api/bot/statuses", {
+    const res = await apiFetch("/api/bot/statuses", {
       method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id: status.id, enabled: !status.enabled }),
@@ -52,7 +53,7 @@ export default function BotStatusPage() {
   };
 
   const deleteStatus = async (id: number) => {
-    await fetch("/api/bot/statuses", {
+    await apiFetch("/api/bot/statuses", {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ id }),
