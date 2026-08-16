@@ -35,6 +35,13 @@ export async function getSession(request?: NextRequest): Promise<JWTPayload | nu
   let token: string | undefined;
   if (request) {
     token = request.cookies.get("sentinel_token")?.value;
+    if (!token) {
+      const cookieHeader = request.headers.get("cookie");
+      if (cookieHeader) {
+        const match = cookieHeader.match(/(?:^|;\s*)sentinel_token=([^;]*)/);
+        if (match) token = match[1];
+      }
+    }
   } else {
     const cookieStore = await cookies();
     token = cookieStore.get("sentinel_token")?.value;

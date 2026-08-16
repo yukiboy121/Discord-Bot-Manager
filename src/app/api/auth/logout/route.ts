@@ -6,7 +6,7 @@ export async function POST(request: NextRequest) {
   response.cookies.set("sentinel_token", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 0,
     path: "/",
   });
@@ -19,9 +19,10 @@ export async function GET(request: NextRequest) {
   response.cookies.set("sentinel_token", "", {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "lax",
+    sameSite: "none",
     maxAge: 0,
     path: "/",
   });
   return response;
 }
+

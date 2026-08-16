@@ -83,7 +83,7 @@ export async function GET(request: NextRequest) {
     response.cookies.set("sentinel_token", token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
-      sameSite: "lax",
+      sameSite: "none",
       maxAge: 7 * 24 * 60 * 60,
       path: "/",
     });
@@ -94,3 +94,4 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(`${baseUrl}/?error=auth_failed`);
   }
 }
+
